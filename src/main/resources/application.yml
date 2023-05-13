@@ -1,0 +1,9 @@
+server:
+  port: 9090
+spring: #配置连接数据源
+  datasource:
+    url: jdbc:mysql://localhost:3306/springboot_vue?userUnicode=true&characterEncoding=UTF-8&userSSL=true;
+    username: root
+    password: hzx
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
