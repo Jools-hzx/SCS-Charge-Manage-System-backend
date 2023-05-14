@@ -56,4 +56,33 @@ public class StationController {
             return Result.error("server", "添加失败,请检查录入的信息");
         }
     }
+
+    //该方法用于通过id查询数据，回显给前端表单
+    @GetMapping("/queryById/{id}")
+    @ResponseBody
+    public Result<?> queryById(@PathVariable Integer id) {
+        try {
+            Station station = stationService.getById(id);
+            return Result.success("", station);
+        } catch (Exception e) {
+            return Result.error("server", "?");
+        }
+    }
+
+    //该方法用于更新站点
+    @PutMapping("/update")
+    @ResponseBody
+    public Result<?> updateStation(@RequestBody Station station) {
+        //注解存在更新记录，否插入一条记录
+        try {
+            boolean saved = stationService.saveOrUpdate(station);
+            if (saved) {
+                return Result.success("更新成功");
+            } else {
+                return Result.error("server", "更新失败");
+            }
+        } catch (Exception e) {
+            return Result.error("server", "?");
+        }
+    }
 }
