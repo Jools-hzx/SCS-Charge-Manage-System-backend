@@ -1,0 +1,12 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolshe.chargesys.mapper.StationMapper">
+    <insert id="addStation" parameterType="Station"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO station
+        (`id`, `name`, `operator`, `price`, `available_charger`, `total_charger`, `img_path`,`location`)
+        VALUES(NULL, #{name}, #{operator}, #{price}, #{availableCharger}, #{totalCharger}, #{imagePath}, #{location});
+    </insert>
+</mapper>

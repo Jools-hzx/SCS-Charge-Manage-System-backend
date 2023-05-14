@@ -5,9 +5,7 @@ import com.joolshe.chargesys.bean.Station;
 import com.joolshe.chargesys.service.StationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -35,6 +33,27 @@ public class StationController {
             return Result.success("请求成功", data);
         } catch (Exception e) {
             return Result.error("server", "请求失败");
+        }
+    }
+
+
+    //该方法用于注册站点
+    @PostMapping("/save")
+    @ResponseBody
+    public Result<?> saveStation(@RequestBody Station station) {
+
+        //TODO 增加站点添加的后端校验
+        if (station.getAvailableCharger() == null) {
+            //初始状态下，站点的可用桩数目即为总桩数
+            station.setAvailableCharger(station.getTotalCharger());
+        }
+
+        try {
+            //调用自定义的注册站点方法，注册站点的同时注册该站点内的充电桩
+            stationService.saveStation(station);
+            return Result.success("成功");
+        } catch (Exception e) {
+            return Result.error("server", "添加失败,请检查录入的信息");
         }
     }
 }

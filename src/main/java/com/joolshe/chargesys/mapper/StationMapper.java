@@ -12,4 +12,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface StationMapper extends BaseMapper<Station> {
+
+
+    //该方法添加站点并返回生成的id
+    void addStation(Station station);
 }

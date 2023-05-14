@@ -10,3 +10,6 @@ mybatis-plus:
   configuration:
     #配置日志输出
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    cache-enabled: true   #开启二级缓存
+  mapper-locations: classpath*:/mapper/**/*.xml #配置 Mapper.xml 文件扫描的位置
+  type-aliases-package: com.joolshe.chargesys.bean
