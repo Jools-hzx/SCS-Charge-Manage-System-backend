@@ -17,8 +17,8 @@ import javax.sql.DataSource;
 @Slf4j
 public class DruidDataSourceConfig {
 
+    @ConfigurationProperties("spring.datasource")   //读取配置文件中的数据源配置
     @Bean
-    @ConfigurationProperties("spring.datatsource")
     public DataSource configDruidSource() {
         DruidDataSource dataSource = new DruidDataSource();
         log.info("加载数据源:" + dataSource.getClass());
