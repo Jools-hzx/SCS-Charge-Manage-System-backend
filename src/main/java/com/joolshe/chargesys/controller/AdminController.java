@@ -28,7 +28,7 @@ public class AdminController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Result adminLogin(@RequestBody Admin admin) {
+    public Result<?> adminLogin(@RequestBody Admin admin) {
 
         log.info("post param:{}", admin);
 

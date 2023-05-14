@@ -1,5 +1,6 @@
 package com.joolshe.chargesys;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2023/5/13 17:01
  * @description:
  */
-
 @SpringBootApplication
 public class Application {
 

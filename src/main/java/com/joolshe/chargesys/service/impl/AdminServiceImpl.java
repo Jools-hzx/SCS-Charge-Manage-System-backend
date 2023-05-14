@@ -1,8 +1,9 @@
-package com.joolshe.chargesys.service;
+package com.joolshe.chargesys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolshe.chargesys.bean.Admin;
 import com.joolshe.chargesys.mapper.AdminMapper;
+import com.joolshe.chargesys.service.AdminService;
 import org.springframework.stereotype.Service;
 
 /**
