@@ -2,7 +2,6 @@ package com.joolshe.chargesys.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolshe.chargesys.bean.Result;
 import com.joolshe.chargesys.bean.Station;
@@ -140,6 +139,33 @@ public class StationController {
         } catch (Exception e) {
             log.error("查询出错:{}", e.getMessage());
             return Result.error("server", "请求失败");
+        }
+    }
+
+    /**
+     * 该方法用于防止站点名称重复
+     *
+     * @param stationName 站点名称
+     * @return 如果查询到说明已存在
+     */
+    @GetMapping("/nameValid/{name}")
+    @ResponseBody
+    public Result<?> isNameExist(@PathVariable(name = "name") String stationName) {
+
+        try {
+            LambdaQueryWrapper<Station> queryWrapper = Wrappers.lambdaQuery();
+            queryWrapper.eq(Station::getName, stationName);
+
+            Station station = stationService.getOne(queryWrapper);
+            if (station != null) {
+                //站点名已经存在
+                return Result.success("名称验证成功", "invalid");
+            } else {
+                //站点名不存在,返回 valid
+                return Result.success("名称验证成功", "valid");
+            }
+        } catch (Exception e) {
+            return Result.error("server", "查询出错");
         }
     }
 }
