@@ -60,7 +60,7 @@ public class StationController {
     //该方法用于通过id查询数据，回显给前端表单
     @GetMapping("/queryById/{id}")
     @ResponseBody
-    public Result<?> queryById(@PathVariable Integer id) {
+    public Result<?> queryById(@PathVariable("id") Integer id) {
         try {
             Station station = stationService.getById(id);
             return Result.success("", station);
@@ -83,6 +83,21 @@ public class StationController {
             }
         } catch (Exception e) {
             return Result.error("server", "?");
+        }
+    }
+
+    @DeleteMapping("/del/{id}")
+    @ResponseBody
+    public Result<?> delStation(@PathVariable("id") Integer id) {
+        try {
+            boolean deleted = stationService.delStation(id);
+            if (deleted) {
+                return Result.success("删除成功！");
+            } else {
+                return Result.error("server", "删除失败");
+            }
+        } catch (Exception e) {
+            return Result.error("server", "删除失败");
         }
     }
 }

@@ -12,4 +12,6 @@ public interface StationService extends IService<Station> {
 
     //自定义添加站点方法
     void saveStation(Station station);
+
+    boolean delStation(Integer id);
 }

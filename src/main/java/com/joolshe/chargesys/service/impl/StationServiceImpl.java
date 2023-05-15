@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Zexi He.
@@ -31,6 +33,11 @@ public class StationServiceImpl
     @Resource
     private ChargerMapper chargerMapper;
 
+    /**
+     * 该方法用于注册站点，同时将该站点对应的充电桩信息加入到数据库中
+     *
+     * @param station 待添加的站点
+     */
     @Transactional(timeout = 5)
     @Override
     public void saveStation(Station station) {
@@ -52,5 +59,25 @@ public class StationServiceImpl
         }
         //自定义方法 批量插入 charger entity
         chargerMapper.insertBatch(chargers);
+    }
+
+    /**
+     * 该方法注销站点，同时删除数据库中所有的充电桩信息
+     *
+     * @param id 待删除的充电站点 id
+     * @return true 表示删除成功，false 表示删除失败
+     */
+    @Transactional(timeout = 5)
+    @Override
+    public boolean delStation(Integer id) {
+
+        //删除站点
+        int sRow = stationMapper.deleteById(id);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("station_Id", id);
+        int aRow = chargerMapper.deleteByMap(map);
+
+        return sRow != 0;
     }
 }
