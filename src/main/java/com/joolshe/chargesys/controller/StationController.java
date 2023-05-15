@@ -1,5 +1,6 @@
 package com.joolshe.chargesys.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolshe.chargesys.bean.Result;
 import com.joolshe.chargesys.bean.Station;
 import com.joolshe.chargesys.service.StationService;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * @author Zexi He.
  * @date 2023/5/14 15:31
- * @description:    Station bean 类对应的 Controller 对象
+ * @description: Station bean 类对应的 Controller 对象
  */
 
 @RequestMapping("/stations")
@@ -53,6 +54,7 @@ public class StationController {
             stationService.saveStation(station);
             return Result.success("成功");
         } catch (Exception e) {
+            log.error("注册站点失败: {}", e.getMessage());
             return Result.error("server", "添加失败,请检查录入的信息");
         }
     }
@@ -65,6 +67,7 @@ public class StationController {
             Station station = stationService.getById(id);
             return Result.success("", station);
         } catch (Exception e) {
+            log.error("查询站点信息失败:{}", e.getMessage());
             return Result.error("server", "?");
         }
     }
@@ -82,7 +85,8 @@ public class StationController {
                 return Result.error("server", "更新失败");
             }
         } catch (Exception e) {
-            return Result.error("server", "?");
+            log.error("更新站点信息失败:{}", e.getMessage());
+            return Result.error("server", "更新失败");
         }
     }
 
@@ -97,7 +101,29 @@ public class StationController {
                 return Result.error("server", "删除失败");
             }
         } catch (Exception e) {
+            log.error("删除站点失败:{}", e.getMessage());
             return Result.error("server", "删除失败");
+        }
+    }
+
+    /**
+     * 该方法完成请求分页数据
+     *
+     * @param pageNum  页数
+     * @param pageSize 页码
+     * @return 分页数据
+     */
+    @GetMapping("/listByPage")
+    @ResponseBody
+    public Result<?> listByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "6") Integer pageSize) {
+
+        try {
+            Page<Station> page = stationService.page(new Page<>(pageNum, pageSize));
+            return Result.success("", page);
+        } catch (Exception e) {
+            log.error("查询出错:{}", e.getMessage());
+            return Result.error("server", "请求失败");
         }
     }
 }
