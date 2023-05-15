@@ -1,11 +1,15 @@
 package com.joolshe.chargesys.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolshe.chargesys.bean.Result;
 import com.joolshe.chargesys.bean.Station;
 import com.joolshe.chargesys.service.StationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -116,10 +120,22 @@ public class StationController {
     @GetMapping("/listByPage")
     @ResponseBody
     public Result<?> listByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                @RequestParam(value = "pageSize", defaultValue = "6") Integer pageSize) {
+                                @RequestParam(value = "pageSize", defaultValue = "6") Integer pageSize,
+                                @RequestParam(value = "search", defaultValue = "") String search) {
+
+        //使用 LambdaQueryWrapper 完成分页查询
+        LambdaQueryWrapper<Station> queryWrapper = Wrappers.lambdaQuery();
+
+        if (StringUtils.hasText(search)) {
+//            SFunction<Station, String> sf = Station::getName;
+//            queryWrapper.like(sf, search);
+
+            //简写
+            queryWrapper.like(Station::getName, search);
+        }
 
         try {
-            Page<Station> page = stationService.page(new Page<>(pageNum, pageSize));
+            Page<Station> page = stationService.page(new Page<>(pageNum, pageSize), queryWrapper);
             return Result.success("", page);
         } catch (Exception e) {
             log.error("查询出错:{}", e.getMessage());
