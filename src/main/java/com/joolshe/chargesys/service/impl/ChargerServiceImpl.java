@@ -76,4 +76,49 @@ public class ChargerServiceImpl
         return true;
     }
 
+    /**
+     * 该方法完成删除 Charger
+     *
+     * @param id charger 对应的 Id
+     * @return true 表示删除成功
+     */
+    @Override
+    @Transactional
+    public boolean delCharger(Integer id) {
+
+        try {
+            //根据 id 查询待删除的 charger
+            Charger charger = chargerMapper.selectById(id);
+            //获取该 charger 的状态
+            Integer status = charger.getStatus();
+            //获取该 charger 所在的站点 id
+            Integer stationId = charger.getStationId();
+
+            //删除
+            chargerMapper.deleteById(id);
+
+            //获取该桩所处站点的原始
+            Station station = stationMapper.selectById(stationId);
+            Integer availCharger = station.getAvailableCharger();
+            Integer totalCharger = station.getTotalCharger();
+
+            UpdateWrapper<Station> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("id", stationId);
+
+            //根据 charger 原始的 status 更新其原本所处站点的可用桩数目
+            if (status == 0) {
+                //如果删除的桩是处于空闲状态下的桩, 更新可用桩数目和总桩数目
+                station.setAvailableCharger(availCharger - 1);
+            }
+            station.setTotalCharger(totalCharger - 1);
+            stationMapper.update(station, updateWrapper);
+
+            log.info("删除充电桩成功，该充电桩所处的站点信息更新, station:{}", station);
+            return true;
+        } catch (Exception e) {
+            log.error("删除充电桩失败: {}", e.getMessage());
+            return false;
+        }
+    }
+
 }

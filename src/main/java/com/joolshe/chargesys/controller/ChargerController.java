@@ -95,4 +95,21 @@ public class ChargerController {
             return Result.error("server", "查询出错");
         }
     }
+
+    @DeleteMapping("/delCharger/{id}")
+    @ResponseBody
+    public Result<?> delChargerByIdResult(@PathVariable(value = "id") Integer id) {
+        try {
+            boolean deleted = chargerService.delCharger(id);
+
+            if (deleted) {
+                //如果删除成功，返回成功提示
+                return Result.success("删除成功");
+            } else {
+                return Result.error("server", "删除失败");
+            }
+        } catch (Exception e) {
+            return Result.error("server", e.getMessage());
+        }
+    }
 }

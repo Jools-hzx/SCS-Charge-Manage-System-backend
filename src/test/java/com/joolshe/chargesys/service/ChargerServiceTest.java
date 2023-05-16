@@ -72,4 +72,15 @@ public class ChargerServiceTest {
         }
     }
 
+
+    @Test
+    public void delChargerById() {
+
+        boolean succeed = chargerService.delCharger(34);
+
+        if (succeed) {
+            System.out.println("删除成功!");
+        }
+    }
+
 }

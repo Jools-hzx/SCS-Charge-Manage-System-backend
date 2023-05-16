@@ -11,4 +11,6 @@ import com.joolshe.chargesys.bean.Charger;
 public interface ChargerService extends IService<Charger> {
 
     boolean updateStatus(Charger charger);
+
+    boolean delCharger(Integer id);
 }
