@@ -94,7 +94,18 @@ public class StationController {
     //该方法用于更新站点
     @PutMapping("/update")
     @ResponseBody
-    public Result<?> updateStation(@RequestBody Station station) {
+    public Result<?> updateStation(@RequestBody @Valid Station station, Errors errors) {
+
+        //查看是否通过验证
+        Map<String, String> errorsMap = new HashMap<>();
+        if (errors.hasErrors()) {
+            List<FieldError> fieldErrors = errors.getFieldErrors();
+            for (FieldError fieldError : fieldErrors) {
+                errorsMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
+            return Result.error("client", "信息校验失败", errorsMap);
+        }
+
         //注解存在更新记录，否插入一条记录
         try {
             boolean saved = stationService.saveOrUpdate(station);
