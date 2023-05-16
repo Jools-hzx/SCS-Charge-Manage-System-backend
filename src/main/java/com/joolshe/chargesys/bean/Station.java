@@ -6,7 +6,12 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.format.annotation.NumberFormat;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -36,21 +41,31 @@ public class Station implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
+    @NotEmpty(message = "名称不能为空")
     private String name;
 
+    @NotEmpty(message = "运营商不能为空")
     private String operator;
 
+    @NumberFormat(pattern="###.##")
+    @NotNull(message = "价格不能为空")
+    @Range(min = 0, message = "价格设置不正确")
     protected BigDecimal price;
 
     @TableField("available_charger")
+    @NotNull(message = "可用桩数目不能为空")
+    @Range(min = 0, message = "可用桩数目需大于等于0")
     private Integer availableCharger;
 
+    @NotNull
+    @Range(min = 1, message = "总桩数目需大于等于1")
     @TableField("total_charger")
     private Integer totalCharger;
 
     @TableField("img_path")
     private String imagePath = "resources/images/xxx.png";  //TODO support upload station image
 
+    @NotEmpty(message = "地点信息不能为空")
     private String location;
 
 }

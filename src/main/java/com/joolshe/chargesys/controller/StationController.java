@@ -9,10 +9,16 @@ import com.joolshe.chargesys.service.StationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Zexi He.
@@ -44,12 +50,22 @@ public class StationController {
     //该方法用于注册站点
     @PostMapping("/save")
     @ResponseBody
-    public Result<?> saveStation(@RequestBody Station station) {
+    public Result<?> saveStation(@RequestBody  @Valid Station station, Errors errors) {
 
         //TODO 增加站点添加的后端校验
         if (station.getAvailableCharger() == null) {
             //初始状态下，站点的可用桩数目即为总桩数
             station.setAvailableCharger(station.getTotalCharger());
+        }
+
+        //查看是否通过验证
+        Map<String, String> errorsMap = new HashMap<>();
+        if (errors.hasErrors()) {
+            List<FieldError> fieldErrors = errors.getFieldErrors();
+            for (FieldError fieldError : fieldErrors) {
+                errorsMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
+            return Result.error("client", "信息校验失败", errorsMap);
         }
 
         try {
