@@ -1,0 +1,17 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolshe.chargesys.mapper.UserMapper">
+
+
+    <insert id="insertBatch" parameterType="java.util.Collection">
+        INSERT INTO `user`(`id`, `username`, `password`, `email`, `phone`, `balance`)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.username}, MD5(#{item.password}), #{item.email}, #{item.phone}, #{item.balance})
+        </foreach>
+    </insert>
+
+
+</mapper>
