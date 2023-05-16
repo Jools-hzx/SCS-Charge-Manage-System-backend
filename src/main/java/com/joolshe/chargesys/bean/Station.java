@@ -53,8 +53,8 @@ public class Station implements Serializable {
     protected BigDecimal price;
 
     @TableField("available_charger")
-    @NotNull(message = "可用桩数目不能为空")
-    @Range(min = 0, message = "可用桩数目需大于等于0")
+//    @NotNull(message = "可用桩数目不能为空")             由于添加站点时，总桩数目即为可用桩数目，暂时注释掉校验规则
+//    @Range(min = 0, message = "可用桩数目需大于等于0")
     private Integer availableCharger;
 
     @NotNull

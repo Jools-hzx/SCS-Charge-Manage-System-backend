@@ -68,4 +68,31 @@ public class ChargerController {
         return Result.success("查询成功", page);
     }
 
+    @PutMapping("/updateStatus")
+    @ResponseBody
+    public Result<?> updateChargerStatus(@RequestBody Charger charger) {
+        try {
+            boolean succeed = chargerService.updateStatus(charger);
+            if (succeed) {
+                log.info("Charger id:{}, 新状态: {}", charger.getId(), charger.getStatus());
+                return Result.success("更新成功");
+            } else {
+                return Result.error("client", "状态更新失败");
+            }
+        } catch (Exception e) {
+            return Result.error("server", e.getMessage());
+        }
+    }
+
+    @GetMapping("/queryById/{id}")
+    @ResponseBody
+    public Result<?> queryChargerById(@PathVariable(value = "id") Integer id) {
+
+        try {
+            Charger charger = chargerService.getBaseMapper().selectById(id);
+            return Result.success("查询成功", charger);
+        } catch (Exception e) {
+            return Result.error("server", "查询出错");
+        }
+    }
 }

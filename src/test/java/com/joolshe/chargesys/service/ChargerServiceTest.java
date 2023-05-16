@@ -26,4 +26,50 @@ public class ChargerServiceTest {
             System.out.println(charger);
         }
     }
+
+    @Test
+    public void updateChargerStatusFromAvilToUse() {
+        Charger charger = new Charger();
+        charger.setId(29);
+        charger.setStatus(1);
+        charger.setStationId(21);
+
+        boolean succeed = chargerService.updateStatus(charger);
+        if (succeed) {
+            System.out.println("更新状态成功！");
+        } else {
+            System.out.println("更新状态失败！");
+        }
+    }
+
+    @Test
+    public void updateChargerStatusFromUseToAvail() {
+        Charger charger = new Charger();
+        charger.setId(29);
+        charger.setStatus(0);
+        charger.setStationId(21);
+
+        boolean succeed = chargerService.updateStatus(charger);
+        if (succeed) {
+            System.out.println("更新状态成功！");
+        } else {
+            System.out.println("更新状态失败！");
+        }
+    }
+
+    @Test
+    public void updateChargerStatusFromUseToError() {
+        Charger charger = new Charger();
+        charger.setId(29);
+        charger.setStatus(2);
+        charger.setStationId(21);
+
+        boolean succeed = chargerService.updateStatus(charger);
+        if (succeed) {
+            System.out.println("更新状态成功！");
+        } else {
+            System.out.println("更新状态失败！");
+        }
+    }
+
 }
