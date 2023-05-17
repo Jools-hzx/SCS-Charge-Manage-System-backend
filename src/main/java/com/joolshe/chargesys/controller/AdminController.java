@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class AdminController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Result<?> adminLogin(@RequestBody Admin admin) {
+    public Result<?> adminLogin(@RequestBody Admin admin, HttpSession session) {
 
         log.info("post param:{}", admin);
 
@@ -44,6 +45,7 @@ public class AdminController {
             //如果查询到管理员用户，则说明登录成功
             if (validAdmin != null) {
                 log.info("管理员登录:" + admin);
+                session.setAttribute("loginAdmin", admin);
                 return Result.success("登陆成功");
             }
             return Result.error("client", "登陆失败，请检查用户名或密码");

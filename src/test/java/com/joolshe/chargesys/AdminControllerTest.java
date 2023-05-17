@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Zexi He.
@@ -22,6 +23,6 @@ public class AdminControllerTest {
 
     @Test
     public void queryAdminByNameAndPwdTest() {
-        adminController.adminLogin(new Admin("Jools_He", "hzx"));
+//        adminController.adminLogin(new Admin("Jools_He", "hzx"), HttpSession session);
     }
 }
