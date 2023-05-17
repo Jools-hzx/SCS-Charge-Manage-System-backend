@@ -1,0 +1,15 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolshe.chargesys.mapper.OrderMapper">
+    <insert id="insertBatch" parameterType="java.util.Collection">
+        INSERT INTO `orders` (`order_id`,`create_time`,`price`,`status`,`user_id`,`charger_id`,`station_id`)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.orderId}, #{item.createTime}, #{item.price},
+             #{item.status}, #{item.userId}, #{item.chargerId}, #{item.stationId})
+        </foreach>
+    </insert>
+
+</mapper>
